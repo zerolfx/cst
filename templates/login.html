@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>华东师范大学</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <script src="{{ url_for('static', filename='jquery/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+</head>
+
+<body>
+    <div class="container">
+        <form role="form" class="form-login content" action="{{ url_for('login') }}" method="POST">
+            <div align="center">
+                <img src="https://upload.wikimedia.org/wikipedia/zh/thumb/d/db/ECNU_Emblem.svg/1024px-ECNU_Emblem.svg.png" class="img-responsive" width="80%" />
+            </div>
+            <h2 class="form-login-heading text-center">华东师范大学</h2>
+            <label for="inputId" class="sr-only">学号</label>
+            <input type="text" class="form-control" name="inputId" placeholder="输入学号">
+            <label for="inputPassword" class="sr-only">密码</label>
+            <input type="password" class="form-control" name="inputPassword" placeholder="输入密码">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox"> 记住登录信息
+                </label>
+            </div>
+            <button type="submit" class="btn btn-lg btn-danger btn-block">登陆</button>
+        </form>
+    </div>
+</body>
+
+</html>
