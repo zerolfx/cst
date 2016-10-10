@@ -19,15 +19,34 @@
             </div>
             <h2 class="form-login-heading text-center">华东师范大学</h2>
             <label for="inputId" class="sr-only">学号</label>
-            <input type="text" class="form-control" name="inputId" placeholder="输入学号">
+            <input type="text" class="form-control" name="inputId" placeholder="输入学号"
+                   {% if username %}value="{{ username }}"{% endif %}
+            >
             <label for="inputPassword" class="sr-only">密码</label>
-            <input type="password" class="form-control" name="inputPassword" placeholder="输入密码">
+            <input type="password" class="form-control" name="inputPassword" placeholder="输入密码"
+                   {% if (password and '密码' not in error) %}value="{{ password }}"{% endif %}
+            >
+
+            <div class="row" padding="10px">
+
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="verifyCode" placeholder="验证码"/>
+            </div>
+            <div class="col-sm-6" style="padding-left: 0">
+                <img class="img-responsive" src="{{ url_for('static', filename='img/'+filename+'.png') }}"/>
+            </div>
+            </div>
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+        {% endif %}
             <div class="checkbox">
                 <label>
                     <input type="checkbox"> 记住登录信息
                 </label>
             </div>
-            <button type="submit" class="btn btn-lg btn-danger btn-block">登陆</button>
+            <button type="submit" class="btn btn-lg btn-danger btn-block">登录</button>
         </form>
     </div>
 </body>
