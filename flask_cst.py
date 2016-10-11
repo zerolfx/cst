@@ -17,7 +17,6 @@ def main():
 @app.route('/')
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-
     def vcode():
         random.seed()
         filename = str(random.randint(100000, 999999))
@@ -43,8 +42,9 @@ def login():
             if username:
                 return redirect(url_for('main'))
             else:
-                cst.delete_img(session.pop('filename'))
+                if session.get('filename'):
+                    cst.delete_img(session.pop('filename'))
         return render_template('login.html', filename=vcode())
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=1234)
