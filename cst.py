@@ -9,13 +9,13 @@ Verify_URL = 'http://www.cst.ecnu.edu.cn/pages/152/'
 Login_URL = 'http://www.cst.ecnu.edu.cn/pages/118/'
 Error_RE = re.compile(r'eid=".*">(.*?)</STATUS></ROOT>')
 Username_RE = re.compile(r'label="真实姓名".*?value="(.*?)"/>')
-
+IMG_PATH = '/home/zerol/PycharmProjects/flask_project/static/img/'
 
 def get_verify(filename):
     s = requests.Session()
     s.get(Verify_Pre_URL)
     r = s.get(Verify_URL)
-    with open('/home/zerol/PycharmProjects/flask_project/static/img/'+filename+'.png', 'wb') as img:
+    with open(IMG_PATH+filename+'.png', 'wb') as img:
         img.write(r.content)
     return s.cookies.get_dict()
 
@@ -37,7 +37,7 @@ def get_username(cookies):
 
 
 def delete_img(filename):
-    path = '/home/zerol/PycharmProjects/flask_project/static/img/'+filename+'.png'
+    path = IMG_PATH+filename+'.png'
     if os.path.isfile(path):
         os.remove(path)
 
