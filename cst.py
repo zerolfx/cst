@@ -1,6 +1,7 @@
 import requests
 import re
 import html
+import sys
 import os
 import time
 import bs4
@@ -9,7 +10,8 @@ Verify_URL = 'http://www.cst.ecnu.edu.cn/pages/152/'
 Login_URL = 'http://www.cst.ecnu.edu.cn/pages/118/'
 Error_RE = re.compile(r'eid=".*">(.*?)</STATUS></ROOT>')
 Username_RE = re.compile(r'label="真实姓名".*?value="(.*?)"/>')
-IMG_PATH = '/home/zerol/PycharmProjects/flask_project/static/img/'
+IMG_PATH = sys.path[0]+'/static/img/'
+
 
 def get_verify(filename):
     s = requests.Session()
@@ -57,10 +59,10 @@ def filter_room(cookies):
                 print([x.string for x in cells])
                 start_time = time.mktime(time.strptime(today + ' ' + cells[4].string[:5], '%Y-%m-%d %H:%S'))
                 end_time = time.mktime(time.strptime(today + ' ' + cells[4].string[-5:], '%Y-%m-%d %H:%S'))
-                if start_time <= now:
+                if now <= end_time:
                     name = re.search(r'^(.*?)\^', cells[1].string).group(1)
                     aid = cells[0].string
-                    if now <= end_time:
+                    if now >= start_time:
                         l.append(dict(name=name, aid=aid, status=1))
                     else:
                         l.append(dict(name=name, aid=aid, status=0))
@@ -96,7 +98,11 @@ def get_room(cookies, aid):
     return l, row, column
 
 if __name__ == '__main__':
+    '''
     cookies = get_verify('t')
     login('10165102122', 'password', input('vcode?\n'), cookies)
     print(filter_room(cookies))
+# [{'aid': '64', 'name': '晚自习519/525[续晋华]', 'status': 0}, {'aid': '68', 'name': '晚自习527/533[续晋华]', 'status': 0}, {'aid': '60', 'name': '晚自习B511/517[金健]', 'status': 0}]
     print(get_room(cookies, '1'))
+# ([[' ', '乔丹', '陶玮', '付志超', '赵昊颖', '李孟航', '邬淑彦', 'disabled', 'disabled', 'disabled'], [' ', '钟鸣', '焦乙竹', '孙校珩', '王宁霞', '刁小桐', '王江舟', '苏晓慧', '武耐池', '莫光雪'], [' ', '林耀松', '任梦薇', '张舒燕', '周于瑞', '王诺', '路梦珂', '庞瑞', '贾博舒', '武蔡丽'], [' ', '郭德闻', '曹董', '郭玲燕', '陈晓萍', '汪尉蓝', '桑青园', '张巧梅', '徐翊宸', '李豪杰'], ['林兰', '顾睿珺', '杨诗文', '杨天强', '郭锦帅', ' ', '朱泽阳', '陈琳琳', '许媛媛', '李春阳'], [' ', '韦阳', '高思远', '崔阳光', '何梦雨', '余光宇', '吴凯', '胡子威', ' ', ' '], [' ', '徐佳炜', '施越', '侯之恒', '吕慧妍', '陆豪', '王辰奕', '黄弘毅', '王玥娇', ' '], ['黄子寅', '苏浩然', '樊洪森', '姚岳坤', ' ', ' ', '赵康哲', '郑淇', ' ', ' '], [' ', '曹卓群', ' ', '吴琪', '唐慧', '季茜', '陈圆', '邱正昊', '叶铭', ' '], [' ', '李轲', '殷正航', '余苏', ' ', '李天', '王馨苑', '岳孚嘉', '吴亿', ' '], ['方超', '普竹语', '李昶臻', '匡筱璐', '郭双怡', '宋雪', '张莉玲', 'disabled', 'disabled', 'disabled'], ['黄平', '吴俊涛', '周顺凯', '袁小杰', '李培勇', '毛鑫', '吴一钺', 'disabled', 'disabled', 'disabled'], [' ', '林泊润', '彭贝城', '周晔', '赖俊宇', '齐强', '费鼎淳', '郝杉', ' ', '黄园苑|李智伟']], <row id="13"><cell><![CDATA[13]]></cell><cell style="background-color:DarkSeaGreen"><![CDATA[ ]]></cell><cell><![CDATA[林泊润]]></cell><cell><![CDATA[彭贝城]]></cell><cell><![CDATA[周晔]]></cell><cell><![CDATA[赖俊宇]]></cell><cell><![CDATA[齐强]]></cell><cell><![CDATA[费鼎淳]]></cell><cell><![CDATA[郝杉]]></cell><cell style="background-color:DarkSeaGreen"><![CDATA[ ]]></cell><cell style="background-color:LightPink"><![CDATA[黄园苑|李智伟]]></cell></row>, 10)
+    '''
