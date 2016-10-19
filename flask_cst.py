@@ -8,6 +8,7 @@ app.config.update(dict(
 
 #  TODO absolute path
 
+
 @app.route('/main')
 def main():
     username = cst.get_username(session['cookies'])
@@ -46,5 +47,11 @@ def login():
                     cst.delete_img(session.pop('filename'))
         return render_template('login.html', filename=vcode())
 
+
+@app.route('/logout')
+def logout():
+    session.pop('cookies')
+    return redirect(url_for('login'))
+
 if __name__ == '__main__':
-    app.run(debug=True, port=1234)
+    app.run(debug=True, port=5000)

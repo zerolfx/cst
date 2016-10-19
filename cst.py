@@ -57,10 +57,13 @@ def filter_room(cookies):
                 print([x.string for x in cells])
                 start_time = time.mktime(time.strptime(today + ' ' + cells[4].string[:5], '%Y-%m-%d %H:%S'))
                 end_time = time.mktime(time.strptime(today + ' ' + cells[4].string[-5:], '%Y-%m-%d %H:%S'))
-                # if start_time<=now<=end_time:
-                name = re.search(r'^(.*?)\^', cells[1].string).group(1)
-                aid = cells[0].string
-                l.append(dict(name=name, aid=aid))
+                if start_time <= now:
+                    name = re.search(r'^(.*?)\^', cells[1].string).group(1)
+                    aid = cells[0].string
+                    if now <= end_time:
+                        l.append(dict(name=name, aid=aid, status=1))
+                    else:
+                        l.append(dict(name=name, aid=aid, status=0))
     return l
 
 
@@ -88,7 +91,7 @@ def get_room(cookies, aid):
         c = row.find_all('cell')
         for j in range(0, column):
             l[int(row['id']) - 1][j] = c[j + 1].string
-            if c[j + 1].has_key('style') and 'gray' in c[j + 1]['style']:
+            if c[j + 1].has_attr('style') and 'gray' in c[j + 1]['style']:
                 l[int(row['id']) - 1][j] = 'disabled'
     return l, row, column
 
